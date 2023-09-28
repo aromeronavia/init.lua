@@ -5,7 +5,7 @@ lsp.preset("recommended")
 lsp.ensure_installed({
   'tsserver',
   'rust_analyzer',
-  'eslint'
+  'eslint',
 })
 
 -- Fix Undefined global 'vim'
@@ -19,6 +19,15 @@ local cmp_mappings = lsp.defaults.cmp_mappings({
   ['<C-y>'] = cmp.mapping.confirm({ select = true }),
   ["<C-Space>"] = cmp.mapping.complete(),
   ["<Tab>"] = cmp.mapping.confirm(),
+  ["<C-j>"] = cmp.mapping(function(fallback)
+    cmp.mapping.abort()
+    local copilot_keys = vim.fn["copilot#Accept"]()
+    if copilot_keys ~= "" then
+      vim.api.nvim_feedkeys(copilot_keys, "i", true)
+    else
+      fallback()
+    end
+  end)
 })
 
 lsp.setup_nvim_cmp({
@@ -48,6 +57,7 @@ lsp.on_attach(function(client, bufnr)
   vim.keymap.set("n", "<leader>vrr", function() vim.lsp.buf.references() end, opts)
   vim.keymap.set("n", "<leader>vrn", function() vim.lsp.buf.rename() end, opts)
   vim.keymap.set("i", "<C-h>", function() vim.lsp.buf.signature_help() end, opts)
+  -- vim.keymap.set("n", "<leader>fn", vim.lsp.buf.format)
 end)
 
 lsp.setup()
