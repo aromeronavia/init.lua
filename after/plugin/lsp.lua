@@ -12,14 +12,15 @@ lsp.ensure_installed({
 lsp.nvim_workspace()
 
 local cmp = require('cmp')
+
 local cmp_select = {behavior = cmp.SelectBehavior.Select}
 local cmp_mappings = lsp.defaults.cmp_mappings({
   ['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
   ['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
   ['<C-y>'] = cmp.mapping.confirm({ select = true }),
   ["<C-Space>"] = cmp.mapping.complete(),
-  ["<Tab>"] = cmp.mapping.confirm(),
-  ["<C-j>"] = cmp.mapping(function(fallback)
+  ["<Enter>"] = cmp.mapping.confirm(),
+  ["<Tab>"] = cmp.mapping(function(fallback)
     cmp.mapping.abort()
     local copilot_keys = vim.fn["copilot#Accept"]()
     if copilot_keys ~= "" then
@@ -31,7 +32,7 @@ local cmp_mappings = lsp.defaults.cmp_mappings({
 })
 
 lsp.setup_nvim_cmp({
-  mapping = cmp_mappings
+  mapping = cmp_mappings,
 })
 
 lsp.set_preferences({

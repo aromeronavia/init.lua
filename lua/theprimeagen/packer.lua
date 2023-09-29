@@ -78,8 +78,19 @@ return require('packer').startup(function(use)
   }
 
   use('Mofiqul/vscode.nvim')
-
   use('romgrk/todoist.nvim')
   use('github/copilot.vim')
+  use('yegappan/mru')
+  use {
+    'zbirenbaum/copilot.lua',
+    cmp = 'Copilot',
+    event = 'InsertEnter',
+    config = function()
+      require('copilot').setup({
+        suggestion = { enabled = false },
+        panel = { enabled = false },
+      })
+    end
+  }
 end)
 
