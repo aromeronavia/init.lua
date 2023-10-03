@@ -67,3 +67,10 @@ vim.diagnostic.config({
     virtual_text = true
 })
 
+require('lspconfig').tsserver.setup({
+  initializationOptions = {
+    preferences = {
+      includeCompletionsForModuleExports = false
+    }
+  }
+})
