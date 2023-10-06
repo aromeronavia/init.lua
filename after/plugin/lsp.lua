@@ -36,7 +36,7 @@ lsp.setup_nvim_cmp({
 })
 
 lsp.set_preferences({
-    suggest_lsp_servers = false,
+    suggest_lsp_servers = true,
     sign_icons = {
         error = 'E',
         warn = 'W',
@@ -61,16 +61,18 @@ lsp.on_attach(function(client, bufnr)
   -- vim.keymap.set("n", "<leader>fn", vim.lsp.buf.format)
 end)
 
-lsp.setup()
-
 vim.diagnostic.config({
     virtual_text = true
 })
 
+require("mason").setup()
+require("mason-lspconfig").setup()
+
 require('lspconfig').tsserver.setup({
-  initializationOptions = {
-    preferences = {
-      includeCompletionsForModuleExports = false
-    }
+  root_dir = require('lspconfig/util').root_pattern(".git"),
+  init_options = {
+    maxTsServerMemory = 12000
   }
 })
+
+lsp.setup()

@@ -92,6 +92,6 @@ return require('packer').startup(function(use)
       })
     end
   }
-  use('nvim-tree/nvim-tree.lua')
+  use('David-Kunz/jester')
 end)
 
