@@ -40,3 +40,5 @@ vim.keymap.set("n", "<leader>mru", "<cmd>MRU<CR>")
 vim.keymap.set("n", "<C-u>", "<cmd>noh<CR>")
 vim.keymap.set("n", "<leader>ne", "<cmd>NvimTreeToggle<CR>")
 vim.keymap.set("n", "<leader>nf", "<cmd>NvimTreeFindFile<CR>")
+
+vim.keymap.set("n", "<leader>e", vim.lsp.buf.format)
