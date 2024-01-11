@@ -1,9 +1,9 @@
+require('lsp-progress').setup {}
+
 require('lualine').setup {
   options = {
     icons_enabled = false,
-    theme = 'auto',
-    component_separators = { left = '', right = ''},
-    section_separators = { left = '', right = ''},
+    theme = 'palenight',
     disabled_filetypes = {
       statusline = {},
       winbar = {},
@@ -20,8 +20,16 @@ require('lualine').setup {
   sections = {
     lualine_a = {'mode'},
     lualine_b = {'branch', 'diff', 'diagnostics'},
-    lualine_c = {'filename'},
-    lualine_y = {'progress'},
+    lualine_c = {
+      'filename',
+    },
+    lualine_x = {
+      require('lsp-progress').progress,
+    },
+    lualine_y = {
+      'progress',
+      'searchcount'
+    },
     lualine_z = {'location'}
   },
   inactive_sections = {
@@ -36,3 +44,11 @@ require('lualine').setup {
   inactive_winbar = {},
   extensions = {}
 }
+
+-- listen lsp-progress event and refresh lualine
+vim.api.nvim_create_augroup("lualine_augroup", { clear = true })
+vim.api.nvim_create_autocmd("User", {
+  group = "lualine_augroup",
+  pattern = "LspProgressStatusUpdated",
+  callback = require("lualine").refresh,
+})
