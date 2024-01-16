@@ -1,5 +1,4 @@
 vim.g.mapleader = " "
-vim.keymap.set("n", "<leader>ne", vim.cmd.Ex)
 
 vim.keymap.set({ "n", "v" }, "<leader>y", [["+y]])
 vim.keymap.set("n", "<leader>Y", [["+Y]])
@@ -39,5 +38,18 @@ vim.keymap.set("n", "<C-f>", "<cmd>MRU<CR>")
 vim.keymap.set("n", "<leader>mru", "<cmd>MRU<CR>")
 vim.keymap.set("n", "<C-u>", "<cmd>noh<CR>")
 vim.keymap.set("n", "<leader>ne", "<cmd>Neotree<CR>")
+vim.keymap.set("n", "<leader>nf", "<cmd>NvimTreeFindFile<CR>")
 
 vim.keymap.set("n", "<leader>e", vim.lsp.buf.format)
+
+local diagnostics_active = true
+local toggle_diagnostics = function()
+  diagnostics_active = not diagnostics_active
+  if diagnostics_active then
+    vim.diagnostic.show()
+  else
+    vim.diagnostic.hide()
+  end
+end
+
+vim.keymap.set('n', '<leader>d', toggle_diagnostics)
