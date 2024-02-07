@@ -3,7 +3,7 @@ local lsp = require("lsp-zero")
 lsp.preset("recommended")
 
 lsp.ensure_installed({
-  'tsserver',
+  -- 'tsserver',
   'rust_analyzer',
   'eslint',
 })
@@ -81,12 +81,5 @@ vim.diagnostic.config({
 
 require("mason").setup()
 require("mason-lspconfig").setup()
-
-require('lspconfig').tsserver.setup({
-  root_dir = require('lspconfig/util').root_pattern(".git"),
-  init_options = {
-    maxTsServerMemory = 12000
-  }
-})
 
 lsp.setup()

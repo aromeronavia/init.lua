@@ -113,4 +113,9 @@ return require('packer').startup(function(use)
       require('lsp-progress').setup()
     end
   }
+
+  use {
+    "pmizio/typescript-tools.nvim",
+    requires = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
+  }
 end)
