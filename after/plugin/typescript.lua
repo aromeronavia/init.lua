@@ -17,7 +17,7 @@ require("typescript-tools").setup {
     tsserver_plugins = {},
     -- this value is passed to: https://nodejs.org/api/cli.html#--max-old-space-sizesize-in-megabytes
     -- memory limit in megabytes or "auto"(basically no limit)
-    tsserver_max_memory = "auto",
+    tsserver_max_memory = "10000",
     -- described below
     tsserver_format_options = {},
     tsserver_file_preferences = {},

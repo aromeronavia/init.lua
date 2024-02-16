@@ -15,10 +15,7 @@ return require('packer').startup(function(use)
 
   use({
     'rose-pine/neovim',
-    as = 'rose-pine',
-    config = function()
-      vim.cmd('colorscheme rose-pine')
-    end
+    as = 'rose-pine'
   })
 
   use({
@@ -117,5 +114,13 @@ return require('packer').startup(function(use)
   use {
     "pmizio/typescript-tools.nvim",
     requires = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
+  }
+
+  use {
+    "catppuccin/nvim",
+    as = "catppuccin",
+    config = function()
+      vim.cmd('colorscheme catppuccin-mocha')
+    end
   }
 end)
