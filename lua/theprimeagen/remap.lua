@@ -32,15 +32,13 @@ vim.keymap.set("n", "<C-l>", "<C-w>l")
 vim.keymap.set("n", "<C-j>", "<C-w>j")
 vim.keymap.set("n", "<C-k>", "<C-w>k")
 
-vim.keymap.set("n", "<C-t>", vim.cmd.tabnew)
-
 vim.keymap.set("n", "<C-f>", "<cmd>MRU<CR>")
-vim.keymap.set("n", "<leader>mru", "<cmd>MRU<CR>")
 vim.keymap.set("n", "<C-u>", "<cmd>noh<CR>")
 vim.keymap.set("n", "<leader>ne", "<cmd>Neotree<CR>")
 vim.keymap.set("n", "<leader>nf", "<cmd>Neotree %<CR>")
 
 vim.keymap.set("n", "<leader>e", vim.lsp.buf.format)
+vim.keymap.set("n", "<C-t>", vim.cmd.tabnew)
 
 local diagnostics_active = true
 local toggle_diagnostics = function()
@@ -53,3 +51,4 @@ local toggle_diagnostics = function()
 end
 
 vim.keymap.set('n', '<leader>d', toggle_diagnostics)
+vim.keymap.set("n", "<C-t>", vim.cmd.tabnew)

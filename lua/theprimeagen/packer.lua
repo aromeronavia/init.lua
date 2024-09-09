@@ -8,7 +8,7 @@ return require('packer').startup(function(use)
   use 'wbthomason/packer.nvim'
 
   use {
-    'nvim-telescope/telescope.nvim', tag = '0.1.0',
+    'nvim-telescope/telescope.nvim', tag = '0.1.4',
     -- or                            , branch = '0.1.x',
     requires = { { 'nvim-lua/plenary.nvim' } }
   }
@@ -20,6 +20,9 @@ return require('packer').startup(function(use)
 
   use({
     "folke/trouble.nvim",
+    requires = {
+      'nvim-tree/nvim-web-devicons'
+    },
     config = function()
       require("trouble").setup {
         icons = false,
@@ -36,13 +39,10 @@ return require('packer').startup(function(use)
       local ts_update = require('nvim-treesitter.install').update({ with_sync = true })
       ts_update()
     end, }
-  use("nvim-treesitter/playground")
   use("theprimeagen/harpoon")
-  use("theprimeagen/refactoring.nvim")
   use("mbbill/undotree")
   use("tpope/vim-fugitive")
   use('tpope/vim-rhubarb')
-  use("nvim-treesitter/nvim-treesitter-context");
 
   use {
     'VonHeikemen/lsp-zero.nvim',
@@ -68,7 +68,6 @@ return require('packer').startup(function(use)
   }
 
   use("folke/zen-mode.nvim")
-  use("eandrju/cellular-automaton.nvim")
   use("laytan/cloak.nvim")
   use {
     'nvim-lualine/lualine.nvim',
@@ -76,7 +75,6 @@ return require('packer').startup(function(use)
   }
 
   use('Mofiqul/vscode.nvim')
-  use('romgrk/todoist.nvim')
   use('github/copilot.vim')
   use('yegappan/mru')
   use {
