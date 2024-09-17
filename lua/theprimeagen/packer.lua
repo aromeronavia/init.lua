@@ -75,7 +75,6 @@ return require('packer').startup(function(use)
   }
 
   use('Mofiqul/vscode.nvim')
-  use('github/copilot.vim')
   use('yegappan/mru')
   use {
     'zbirenbaum/copilot.lua',
@@ -88,7 +87,6 @@ return require('packer').startup(function(use)
       })
     end
   }
-  use('David-Kunz/jester')
   use {
     "nvim-neo-tree/neo-tree.nvim",
     branch = "v3.x",
@@ -100,9 +98,19 @@ return require('packer').startup(function(use)
     }
   }
 
-  use 'pest-parser/pest.vim'
+  -- use 'pest-parser/pest.vim'
 
   use {
+    'sontungexpt/better-diagnostic-virtual-text',
+    config = function()
+      require('better-diagnostic-virtual-text').setup({})
+    end
+  }
+
+  use('dmmulroy/ts-error-translator.nvim')
+
+  use {
+
     'linrongbin16/lsp-progress.nvim',
     config = function()
       require('lsp-progress').setup()
@@ -119,6 +127,13 @@ return require('packer').startup(function(use)
     as = "catppuccin",
     config = function()
       vim.cmd('colorscheme catppuccin-mocha')
+    end
+  }
+
+  use {
+    "klen/nvim-test",
+    config = function()
+      require('nvim-test').setup()
     end
   }
 end)

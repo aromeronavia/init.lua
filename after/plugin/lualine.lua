@@ -18,8 +18,8 @@ require('lualine').setup {
     }
   },
   sections = {
-    lualine_a = {'mode'},
-    lualine_b = {'branch', 'diff', 'diagnostics'},
+    lualine_a = { 'mode' },
+    lualine_b = { 'branch', 'diff', 'diagnostics' },
     lualine_c = {
       'filename',
     },
@@ -30,12 +30,12 @@ require('lualine').setup {
       'progress',
       'searchcount'
     },
-    lualine_z = {'location'}
+    lualine_z = { 'location' }
   },
   inactive_sections = {
     lualine_a = {},
     lualine_b = {},
-    lualine_c = {'filename'},
+    lualine_c = { 'filename' },
     lualine_y = {},
     lualine_z = {}
   },
