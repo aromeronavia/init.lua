@@ -121,4 +121,25 @@ return require('packer').startup(function(use)
       vim.cmd('colorscheme catppuccin-mocha')
     end
   }
+
+  use {
+    'kristijanhusak/vim-dadbod-ui',
+    requires = {
+      { 'tpope/vim-dadbod', lazy = true },
+      { 'kristijanhusak/vim-dadbod-completion', ft = { 'sql', 'mysql', 'psql' }, lazy = true }
+    },
+    config = function()
+      vim.g.db_ui_use_nerd_fonts = 1
+    end,
+  }
+
+  use {'nvim-telescope/telescope-ui-select.nvim' }
+
+  use {
+    "CopilotC-Nvim/CopilotChat.nvim",
+    build = "make tiktoken", -- Only on MacOS or Linux
+    opts = {
+      debug = false, -- Enable debugging
+    },
+  }
 end)

@@ -1,4 +1,5 @@
-vim.keymap.set("n", "<leader>gs", vim.cmd.Git)
+local telescope = require("telescope.builtin")
+vim.keymap.set("n", "<leader>gs", telescope.git_status)
 
 local ThePrimeagen_Fugitive = vim.api.nvim_create_augroup("ThePrimeagen_Fugitive", {})
 

@@ -10,3 +10,8 @@ vim.keymap.set('n', '<leader>ch', builtin.command_history, {})
 vim.keymap.set('n', '<leader>gc', builtin.git_commits, {})
 vim.keymap.set('n', '<leader>gb', builtin.git_branches, {})
 vim.keymap.set('n', '<leader>vs', builtin.lsp_document_symbols, {})
+vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, {})
+
+-- To get ui-select loaded and working with telescope, you need to call
+-- load_extension, somewhere after setup function:
+require("telescope").load_extension("ui-select")
