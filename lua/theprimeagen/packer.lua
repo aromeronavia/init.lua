@@ -20,12 +20,9 @@ return require('packer').startup(function(use)
 
   use({
     "folke/trouble.nvim",
-    requires = {
-      'nvim-tree/nvim-web-devicons'
-    },
     config = function()
       require("trouble").setup {
-        icons = false,
+        icons = {},
         -- your configuration comes here
         -- or leave it empty to use the default settings
         -- refer to the configuration section below
@@ -125,7 +122,7 @@ return require('packer').startup(function(use)
   use {
     'kristijanhusak/vim-dadbod-ui',
     requires = {
-      { 'tpope/vim-dadbod', lazy = true },
+      { 'tpope/vim-dadbod',                     lazy = true },
       { 'kristijanhusak/vim-dadbod-completion', ft = { 'sql', 'mysql', 'psql' }, lazy = true }
     },
     config = function()
@@ -133,13 +130,58 @@ return require('packer').startup(function(use)
     end,
   }
 
-  use {'nvim-telescope/telescope-ui-select.nvim' }
+  use { 'nvim-telescope/telescope-ui-select.nvim' }
 
   use {
     "CopilotC-Nvim/CopilotChat.nvim",
     build = "make tiktoken", -- Only on MacOS or Linux
     opts = {
-      debug = false, -- Enable debugging
+      debug = false,         -- Enable debugging
     },
   }
+
+  use {
+    'sontungexpt/better-diagnostic-virtual-text',
+    config = function(_)
+      require('better-diagnostic-virtual-text').setup(opts)
+    end
+  }
+
+  use { 'bluz71/vim-nightfly-colors' }
+
+  use({
+    "epwalsh/obsidian.nvim",
+    tag = "*", -- recommended, use latest release instead of latest commit
+    requires = {
+      -- Required.
+      "nvim-lua/plenary.nvim",
+
+      -- see below for full list of optional dependencies 👇
+    },
+    config = function()
+      require("obsidian").setup({
+        workspaces = {
+          {
+            name = "personal",
+            path = "~/Vaults/aromeronavia",
+          },
+        },
+
+        -- see below for full list of options 👇
+      })
+    end,
+  })
+
+  use({
+    'pwntester/octo.nvim',
+    requires = {
+      'nvim-lua/plenary.nvim',
+      'nvim-telescope/telescope.nvim',
+      -- OR 'ibhagwan/fzf-lua',
+      'nvim-tree/nvim-web-devicons',
+    },
+    config = function()
+      require("octo").setup()
+    end
+  })
 end)

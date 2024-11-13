@@ -36,4 +36,3 @@ vim.opt.colorcolumn = "80"
 
 -- set termguicolors to enable highlight groups
 vim.opt.termguicolors = true
-vim.cmd("colorscheme nightfly")
