@@ -51,4 +51,3 @@ local toggle_diagnostics = function()
 end
 
 vim.keymap.set('n', '<leader>d', toggle_diagnostics)
-vim.keymap.set("n", "<C-t>", vim.cmd.tabnew)
