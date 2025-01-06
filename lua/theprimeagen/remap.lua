@@ -19,6 +19,7 @@ vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><
 vim.keymap.set("n", "<leader>vfd", "<cmd>:e ~/.config/nvim/lua/theprimeagen/remap.lua<CR>")
 
 vim.keymap.set("n", "<leader>gt", "<cmd>Git<CR>")
+vim.keymap.set("n", "<leader>l", "<cmd>EslintFixAll<CR>")
 
 -- vim.keymap.set("n", "<leader>cpe", "<cmd>Copilot enable<CR>")
 -- vim.keymap.set("n", "<leader>cpd", "<cmd>Copilot disable<CR>")

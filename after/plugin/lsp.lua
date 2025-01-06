@@ -70,9 +70,10 @@ lsp.on_attach(function(client, bufnr)
   vim.keymap.set("v", "<leader>ca", function() vim.lsp.buf.code_action() end, opts)
   vim.keymap.set("n", "<leader>vrr", function() vim.lsp.buf.references() end, opts)
   vim.keymap.set("n", "<leader>vrn", function() vim.lsp.buf.rename() end, opts)
+  vim.keymap.set("n", "<leader>l", "<cmd>EslintFixAll<CR>")
   -- vim.keymap.set("n", "<leader>fn", vim.lsp.buf.format)
   --
-  lsp_format_on_save(bufnr)
+  -- lsp_format_on_save(bufnr)
 end)
 
 vim.diagnostic.config({
