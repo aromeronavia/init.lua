@@ -18,7 +18,6 @@ vim.keymap.set("n", "<leader>j", "<cmd>lprev<CR>zz")
 vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
 vim.keymap.set("n", "<leader>vfd", "<cmd>:e ~/.config/nvim/lua/theprimeagen/remap.lua<CR>")
 
-vim.keymap.set("n", "<leader>gt", "<cmd>Git<CR>")
 vim.keymap.set("n", "<leader>l", "<cmd>EslintFixAll<CR>")
 
 -- vim.keymap.set("n", "<leader>cpe", "<cmd>Copilot enable<CR>")
@@ -52,3 +51,4 @@ local toggle_diagnostics = function()
 end
 
 vim.keymap.set('n', '<leader>d', toggle_diagnostics)
+vim.keymap.set('n', '<leader>p', "<cmd>%!prettier %<CR>")
