@@ -51,4 +51,4 @@ local toggle_diagnostics = function()
 end
 
 vim.keymap.set('n', '<leader>d', toggle_diagnostics)
-vim.keymap.set('n', '<leader>p', "<cmd>%!prettier %<CR>")
+vim.keymap.set('n', '<leader>pp', "<cmd>LspZeroFormat<CR>")
