@@ -1,13 +1,13 @@
--- require('telescope').setup({
---   extensions = {
---     fzy_native = {
---       override_generic_sorter = false,
---       override_file_sorter = true,
---     },
---   }
--- })
---
--- require('telescope').load_extension('fzy_native')
+local ignore_filetypes_list = {
+    "node_modules"
+}
+
+require('telescope').setup({
+  defaults = {
+    file_ignore_patterns = ignore_filetypes_list
+  }
+})
+
 local builtin = require('telescope.builtin')
 
 -- vim.keymap.set('n', '<leader>pf', builtin.git_files, {})
@@ -22,6 +22,7 @@ vim.keymap.set('n', '<leader>gc', builtin.git_commits, {})
 vim.keymap.set('n', '<leader>gb', builtin.git_branches, {})
 vim.keymap.set('n', '<leader>vs', builtin.lsp_document_symbols, {})
 vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, {})
+vim.keymap.set('n', '<leader>r' , builtin.resume, {})
 
 -- To get ui-select loaded and working with telescope, you need to call
 -- load_extension, somewhere after setup function:
