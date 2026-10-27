@@ -1,12 +1,12 @@
-vim.keymap.set("n", "<leader>xq", "<cmd>TroubleToggle quickfix<cr>",
+vim.keymap.set("n", "<leader>xq", "<cmd>Trouble qflist toggle<cr>",
   { silent = true, noremap = true }
 )
 
-vim.keymap.set("n", "<leader>xx", "<cmd>Trouble diagnostics <cr>",
+vim.keymap.set("n", "<leader>xx", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>",
   { silent = true, noremap = true }
 )
 
-vim.keymap.set("n", "<leader>xd", "<cmd>Trouble workspace_diagnostics <cr>",
+vim.keymap.set("n", "<leader>xd", "<cmd>Trouble diagnostics toggle<cr>",
   { silent = true, noremap = true }
 )
 

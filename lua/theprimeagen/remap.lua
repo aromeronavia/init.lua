@@ -10,15 +10,11 @@ vim.keymap.set("i", "<C-c>", "<Esc>")
 
 vim.keymap.set("n", "Q", "<nop>")
 
-vim.keymap.set("n", "<C-k>", "<cmd>cnext<CR>zz")
-vim.keymap.set("n", "<C-j>", "<cmd>cprev<CR>zz")
 vim.keymap.set("n", "<leader>k", "<cmd>lnext<CR>zz")
 vim.keymap.set("n", "<leader>j", "<cmd>lprev<CR>zz")
 
 vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
 vim.keymap.set("n", "<leader>vfd", "<cmd>:e ~/.config/nvim/lua/theprimeagen/remap.lua<CR>")
-
-vim.keymap.set("n", "<leader>l", "<cmd>EslintFixAll<CR>")
 
 -- vim.keymap.set("n", "<leader>cpe", "<cmd>Copilot enable<CR>")
 -- vim.keymap.set("n", "<leader>cpd", "<cmd>Copilot disable<CR>")
@@ -37,7 +33,7 @@ vim.keymap.set("n", "<C-u>", "<cmd>noh<CR>")
 vim.keymap.set("n", "<leader>ne", "<cmd>Neotree<CR>")
 vim.keymap.set("n", "<leader>nf", "<cmd>Neotree %<CR>")
 
-vim.keymap.set("n", "<leader>e", vim.lsp.buf.format)
+vim.keymap.set("n", "<leader>e", function() require("conform").format() end)
 vim.keymap.set("n", "<C-t>", vim.cmd.tabnew)
 
 local diagnostics_active = true
@@ -50,5 +46,5 @@ local toggle_diagnostics = function()
   end
 end
 
-vim.keymap.set('n', '<leader>d', toggle_diagnostics)
-vim.keymap.set('n', '<leader>pp', "<cmd>LspZeroFormat<CR>")
+vim.keymap.set('n', '<leader>xt', toggle_diagnostics)
+vim.keymap.set('n', '<leader>pp', function() require("conform").format() end)

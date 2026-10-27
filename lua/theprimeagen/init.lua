@@ -1,5 +1,6 @@
 require("theprimeagen.set")
 require("theprimeagen.remap")
+require("theprimeagen.lazy")
 
 local augroup = vim.api.nvim_create_augroup
 local Group = augroup('Group', {})
@@ -43,7 +44,6 @@ vim.api.nvim_set_keymap('!', '<D-v>', '<C-R>+', { noremap = true, silent = true}
 vim.api.nvim_set_keymap('t', '<D-v>', '<C-R>+', { noremap = true, silent = true})
 vim.api.nvim_set_keymap('v', '<D-v>', '<C-R>+', { noremap = true, silent = true})
 vim.api.nvim_set_keymap('n', '<D-t>', ':tabnew<CR>', { noremap = true, silent = true })
-vim.keymap.set('n', '<D-w>', ':tabclose<CR>', { silent = true })
 vim.keymap.set('n', '<D-w>', ':q<CR>', { silent = true })
 
 vim.g.neovide_position_animation_length = 0
