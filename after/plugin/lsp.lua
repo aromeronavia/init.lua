@@ -74,7 +74,9 @@ cmp.setup({
     completeopt = 'menu,menuone,noinsert',
   },
   window = {
-    documentation = cmp.config.window.bordered(),
+    -- explicit border: bordered() reads vim.o.winborder, which isn't set yet at this point
+    completion = cmp.config.window.bordered({ border = 'rounded' }),
+    documentation = cmp.config.window.bordered({ border = 'rounded' }),
   },
   mapping = {
     ['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
@@ -158,6 +160,9 @@ vim.api.nvim_create_autocmd('LspAttach', {
     -- lsp_format_on_save(ev.buf)
   end,
 })
+
+-- Border + padding for hover (K), signature help and diagnostic floats
+vim.o.winborder = 'rounded'
 
 vim.diagnostic.config({
   virtual_text = true,
