@@ -140,6 +140,21 @@ require("lazy").setup({
       end,
     },
 
+    -- Live markdown preview in the browser. Downloads a prebuilt binary, so no yarn/npm needed.
+    {
+      "iamcco/markdown-preview.nvim",
+      cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+      ft = { "markdown" },
+      build = function()
+        -- The plugin is lazy-loaded, so load it before calling its installer.
+        require("lazy").load({ plugins = { "markdown-preview.nvim" } })
+        vim.fn["mkdp#util#install"]()
+      end,
+      keys = {
+        { "<leader>mp", "<cmd>MarkdownPreviewToggle<CR>", ft = "markdown", desc = "Markdown: toggle preview" },
+      },
+    },
+
     { "pest-parser/pest.vim" },
     { "linrongbin16/lsp-progress.nvim" },
 
