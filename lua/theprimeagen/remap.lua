@@ -16,9 +16,6 @@ vim.keymap.set("n", "<leader>j", "<cmd>lprev<CR>zz")
 vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
 vim.keymap.set("n", "<leader>vfd", "<cmd>:e ~/.config/nvim/lua/theprimeagen/remap.lua<CR>")
 
--- vim.keymap.set("n", "<leader>cpe", "<cmd>Copilot enable<CR>")
--- vim.keymap.set("n", "<leader>cpd", "<cmd>Copilot disable<CR>")
-
 vim.keymap.set("n", "<leader><leader>", function()
   vim.cmd("so")
 end)
@@ -32,6 +29,13 @@ vim.keymap.set("n", "<C-f>", "<cmd>MRU<CR>")
 vim.keymap.set("n", "<C-u>", "<cmd>noh<CR>")
 vim.keymap.set("n", "<leader>ne", "<cmd>Neotree<CR>")
 vim.keymap.set("n", "<leader>nf", "<cmd>Neotree %<CR>")
+vim.keymap.set("n", "<leader>ng", "<cmd>Neotree toggle git_status<CR>")
+
+-- git worktrees (polarmutex/git-worktree.nvim)
+-- vim.keymap.set("n", "<leader>gw", function() require("telescope").extensions.git_worktree.git_worktree() end)
+vim.keymap.set("n", "<leader>gw", function() require("theprimeagen.worktrees").pick() end) -- picker with created date
+vim.keymap.set("n", "<leader>gx", function() require("telescope").extensions.git_worktree.git_worktree() end) -- plugin's picker (has <M-d> delete)
+vim.keymap.set("n", "<leader>gW", function() require("telescope").extensions.git_worktree.create_git_worktree() end)
 
 vim.keymap.set("n", "<leader>e", function() require("conform").format() end)
 vim.keymap.set("n", "<C-t>", vim.cmd.tabnew)

@@ -114,6 +114,30 @@ require("lazy").setup({
         "nvim-tree/nvim-web-devicons",
         "MunifTanjim/nui.nvim",
       },
+      opts = {
+        git_status = {
+          window = {
+            mappings = {
+              -- gd: open file under cursor and show side-by-side git diff (fugitive)
+              ["gd"] = function(state)
+                local node = state.tree:get_node()
+                if node.type ~= "file" then return end
+                require("neo-tree.sources.common.commands").open(state)
+                vim.cmd("Gvdiffsplit")
+              end,
+            },
+          },
+        },
+      },
+    },
+
+    {
+      "polarmutex/git-worktree.nvim",
+      version = "^2",
+      dependencies = { "nvim-lua/plenary.nvim", "nvim-telescope/telescope.nvim" },
+      config = function()
+        require("telescope").load_extension("git_worktree")
+      end,
     },
 
     { "pest-parser/pest.vim" },
@@ -153,6 +177,18 @@ require("lazy").setup({
     { "kdheepak/lazygit.nvim", dependencies = { "nvim-lua/plenary.nvim" } },
     { "nvim-lua/lsp-status.nvim" },
     { "coder/claudecode.nvim", dependencies = { "folke/snacks.nvim" } },
+
+    -- Multi-cursor: <C-s> selects word under cursor, repeat to add next match
+    {
+      "mg979/vim-visual-multi",
+      branch = "master",
+      init = function()
+        vim.g.VM_maps = {
+          ["Find Under"] = "<C-s>",
+          ["Find Subword Under"] = "<C-s>",
+        }
+      end,
+    },
   },
   install = { colorscheme = { "nightfly" } },
   rocks = { enabled = false },

@@ -38,6 +38,8 @@ vim.g.copilot_assume_mapped = true
 vim.g.copilot_tab_fallback = ""
 vim.opt.ignorecase = true
 
+vim.o.guifont = "Monaco:h14"
+
 vim.g.neovide_input_use_logo = 1
 vim.api.nvim_set_keymap('', '<D-v>', '+p<CR>', { noremap = true, silent = true})
 vim.api.nvim_set_keymap('!', '<D-v>', '<C-R>+', { noremap = true, silent = true})
