@@ -50,12 +50,31 @@ function M.render_task(task, depth)
   return table.concat(parts, " ")
 end
 
-function M.render_header(project)
-  return "* " .. project.name
+--- The project a filter is scoped to ("#Prefix", "##Prefix"), or nil for anything broader.
+function M.project_from_filter(filter)
+  if not filter then
+    return nil
+  end
+  local name = vim.trim(filter):match("^##?([^&|!()#@]+)$")
+  return name and vim.trim(name) or nil
 end
 
+--- Headers carry the project id (concealed) so duplicate or renamed projects resolve exactly.
+function M.render_header(project)
+  return "* " .. project.name .. " {{" .. project.id .. "}}"
+end
+
+--- Returns name, id (id is nil for a header typed by hand), or nil if not a header.
 function M.parse_header(line)
-  return line:match("^%*+%s+(.-)%s*$")
+  local rest = line:match("^%*+%s+(.-)%s*$")
+  if not rest then
+    return nil
+  end
+  local name, id = rest:match("^(.-)%s*{{([%w_%-]+)}}$")
+  if name then
+    return name, id
+  end
+  return rest, nil
 end
 
 -- Splits a trailing token off `text`; returns the remaining text and the capture, if any.

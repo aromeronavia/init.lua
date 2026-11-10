@@ -13,14 +13,7 @@ local function arg_or_nil(args)
   return text ~= "" and text or nil
 end
 
---- The project a filter is scoped to ("#Prefix", "##Prefix"), or nil for anything broader.
-function M.project_from_filter(filter)
-  if not filter then
-    return nil
-  end
-  local name = vim.trim(filter):match("^##?([^&|!()#@]+)$")
-  return name and vim.trim(name) or nil
-end
+M.project_from_filter = require("theprimeagen.todoist.format").project_from_filter
 
 -- Quick add files tasks without a #Project into the Inbox, so add the default project
 -- unless the text already names one. Spaces in project names are escaped as "\ ".

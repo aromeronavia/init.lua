@@ -50,9 +50,24 @@ local function task_tree(tasks)
   return ordered
 end
 
+--- The project a filter is scoped to, as a project object, or nil.
+function M.filter_project(projects, filter)
+  local name = format.project_from_filter(filter)
+  if not name then
+    return nil
+  end
+  for _, project in ipairs(projects) do
+    if project.name:lower() == name:lower() then
+      return project
+    end
+  end
+end
+
 --- Returns the buffer lines and a snapshot { [task_id] = parsed line } to diff against on write.
 --- A nil filter lists every project, so empty ones are there to add tasks under.
+--- A single-project filter ("#Prefix") always shows that project, even with no tasks.
 function M.render(projects, tasks, filter)
+  local always_show = M.filter_project(projects, filter)
   local tasks_by_project = {}
   for _, task in ipairs(tasks) do
     tasks_by_project[task.project_id] = tasks_by_project[task.project_id] or {}
@@ -67,7 +82,7 @@ function M.render(projects, tasks, filter)
 
   for _, project in ipairs(sort_projects(projects)) do
     local project_tasks = tasks_by_project[project.id]
-    if project_tasks or not filter then
+    if project_tasks or not filter or project == always_show then
       table.insert(lines, "")
       table.insert(lines, format.render_header(project))
       for _, entry in ipairs(task_tree(project_tasks or {})) do
@@ -104,27 +119,35 @@ end
 --- Compares the edited lines with the snapshot.
 --- Returns ops (each { kind, id?, body?, project_id?, label }) and a list of error strings.
 --- If there are errors, nothing should be applied.
-function M.plan(lines, snapshot, projects)
-  local projects_by_name = {}
+--- Task lines above the first header go to the filter's project, or the Inbox.
+function M.plan(lines, snapshot, projects, filter)
+  local projects_by_id, projects_by_name, duplicate_names = {}, {}, {}
   for _, project in ipairs(projects) do
-    projects_by_name[project.name:lower()] = project
+    projects_by_id[project.id] = project
+    local key = project.name:lower()
+    if projects_by_name[key] then
+      duplicate_names[key] = true
+    end
+    projects_by_name[key] = project
   end
 
   local ops, errors, seen = {}, {}, {}
-  local current_project = inbox_id(projects)
+  local default_project = M.filter_project(projects, filter)
+  local current_project = default_project and default_project.id or inbox_id(projects)
 
   for lnum, line in ipairs(lines) do
-    local header = format.parse_header(line)
+    local header, header_id = format.parse_header(line)
     local task = not header and format.parse_task(line)
 
     if header then
-      local project = projects_by_name[header:lower()]
-      if project then
-        current_project = project.id
-      else
-        current_project = nil
+      local project = projects_by_id[header_id] or projects_by_name[header:lower()]
+      if not projects_by_id[header_id] and duplicate_names[header:lower()] then
+        project = nil
+        table.insert(errors, ("line %d: more than one project is named %q"):format(lnum, header))
+      elseif not project then
         table.insert(errors, ("line %d: no project named %q (create it in Todoist first)"):format(lnum, header))
       end
+      current_project = project and project.id
     elseif task and task.content ~= "" and current_project then
       local before = task.id and snapshot[task.id]
 
@@ -151,13 +174,20 @@ function M.plan(lines, snapshot, projects)
           table.insert(ops, { kind = "close", id = task.id, label = task.content })
         end
       elseif not task.checked then
-        -- New line, or a pasted duplicate of an existing task: create it.
-        local body = vim.tbl_extend("force", {
-          content = task.content,
+        -- New line, or a pasted duplicate of an existing task: create it through Quick Add,
+        -- so "Call John at 4pm @calls" is parsed like in the Todoist app. An explicit
+        -- <date> or pN on the line is applied afterwards and wins over the parsed text.
+        local overrides = due_fields(task.due, false)
+        if task.priority ~= format.DEFAULT_PRIORITY then
+          overrides.priority = format.api_priority(task.priority)
+        end
+        table.insert(ops, {
+          kind = "create",
+          text = task.content,
           project_id = current_project,
-          priority = format.api_priority(task.priority),
-        }, due_fields(task.due, false))
-        table.insert(ops, { kind = "create", body = body, label = task.content })
+          overrides = overrides,
+          label = task.content,
+        })
       end
     end
   end

@@ -33,7 +33,7 @@ local function setup_syntax(buf)
     vim.cmd([[
       syntax clear
       syntax match todoistComment /^#.*$/
-      syntax match todoistHeader /^\*\+\s.*$/
+      syntax match todoistHeader /^\*\+\s.*$/ contains=todoistId
       syntax match todoistDone /^\s*- \[[xX]\].*$/ contains=todoistId
       syntax match todoistDue /<[^<>]*>/
       syntax match todoistP1 /\s\zsp1\ze\s*\%({{\|$\)/
@@ -239,9 +239,46 @@ end
 
 local OP_ORDER = { delete = 1, create = 2, update = 3, move = 4, close = 5 }
 
+-- Quick Add parses the text (dates, @labels, ...) but has no project field, and a #Project
+-- in the text would be ambiguous for duplicate names. So add it to the default project,
+-- then apply the line's explicit <date>/priority and move it where the line says.
+-- cb(err, task) gets the task as it ended up.
+local function create_task(op, cb)
+  api.quick_add(op.text, function(err, task)
+    if err then
+      return cb(err)
+    end
+    if not (task and task.id) then
+      return cb("Todoist did not return the new task, so its project and date could not be set")
+    end
+
+    local function move_if_needed(current)
+      if current.project_id == op.project_id then
+        return cb(nil, current)
+      end
+      api.move_task(current.id, op.project_id, function(move_err, moved)
+        if move_err then
+          return cb("created, but could not move it: " .. move_err)
+        end
+        cb(nil, moved or vim.tbl_extend("force", current, { project_id = op.project_id }))
+      end)
+    end
+
+    if next(op.overrides) == nil then
+      return move_if_needed(task)
+    end
+    api.update_task(task.id, op.overrides, function(update_err, updated)
+      if update_err then
+        return cb("created, but could not set its date/priority: " .. update_err)
+      end
+      move_if_needed(updated or task)
+    end)
+  end)
+end
+
 local function run_op(op, cb)
   if op.kind == "create" then
-    api.create_task(op.body, cb)
+    create_task(op, cb)
   elseif op.kind == "update" then
     api.update_task(op.id, op.body, cb)
   elseif op.kind == "move" then
@@ -292,7 +329,7 @@ function M.write(buf)
   end
 
   local lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
-  local ops, errors = sync.plan(lines, st.snapshot, st.projects)
+  local ops, errors = sync.plan(lines, st.snapshot, st.projects, st.filter)
   if #errors > 0 then
     return notify("nothing saved:\n" .. table.concat(errors, "\n"), vim.log.levels.ERROR)
   end
@@ -309,7 +346,15 @@ function M.write(buf)
   end)
 
   st.busy = true
-  local failures = {}
+  local failures, created = {}, {}
+  local function project_name(id)
+    for _, project in ipairs(st.projects) do
+      if project.id == id then
+        return project.name
+      end
+    end
+    return tostring(id)
+  end
   local function step(i)
     if i > #ops then
       st.busy = false
@@ -317,14 +362,23 @@ function M.write(buf)
         notify(("%d of %d changes failed:\n%s"):format(#failures, #ops, table.concat(failures, "\n")),
           vim.log.levels.ERROR)
       else
-        notify("saved (" .. summarize(ops) .. ")")
+        notify("saved (" .. summarize(ops) .. ")" .. table.concat(created, ""))
       end
       return M.refresh(buf)
     end
     local op = ops[i]
-    run_op(op, function(err)
+    run_op(op, function(err, task)
       if err then
         failures[#failures + 1] = ("%s %q: %s"):format(op.kind, op.label, err)
+      elseif op.kind == "create" then
+        local wanted = op.project_id
+        local landed = task and task.project_id or wanted
+        if landed ~= wanted then
+          failures[#failures + 1] = ("create %q: asked for #%s, Todoist put it in #%s"):format(
+            op.label, project_name(wanted), project_name(landed))
+        else
+          created[#created + 1] = ("\n  + %s → #%s"):format(op.label, project_name(landed))
+        end
       end
       step(i + 1)
     end)
